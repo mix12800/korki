@@ -1,0 +1,36 @@
+<?php
+
+namespace App\Http\Requests;
+
+use _PHPStan_b713fd2c7\Symfony\Contracts\Service\Attribute\Required;
+use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Foundation\Http\FormRequest;
+
+class RegistrationRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    // public function authorize(): bool
+    // {
+    //     return false;
+    // }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    {
+        return [
+            'fio' => 'required',
+            'phone' => 'required',
+            'email' => 'required|email|unique:users',
+            'login' => 'required|min:6|unique:users',
+            'password' => 'required|min:8',
+        ];
+    }
+}
+
+
