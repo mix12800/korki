@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->string('fio');
             $table->string('phone');
             $table->string('email')->unique();
-            $table->enum('role', ['user', 'admin']);
+            $table->enum('role', ['user', 'admin'])->default('user');
             $table->string('login')->unique();
             $table->string('password');
             $table->timestamps();

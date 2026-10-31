@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CourseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -9,3 +10,8 @@ use Illuminate\Support\Facades\Route;
 // })->middleware('auth:sanctum');
 
 Route::post('registration', [AuthController::class, 'registration']);
+Route::post('auth', [AuthController::class, 'auth']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::resource('course', CourseController::class);
+});

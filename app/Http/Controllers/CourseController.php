@@ -29,7 +29,8 @@ class CourseController extends Controller
      */
     public function store(StoreCourseRequest $request)
     {
-        //
+        $course = Course::create($request->all());
+        return response()->json(['course' => $course], 201);
     }
 
     /**
@@ -53,7 +54,12 @@ class CourseController extends Controller
      */
     public function update(UpdateCourseRequest $request, Course $course)
     {
-        //
+        $course_old = Course::where('name', $request->name);
+        if ($course_old && $course_old->id != $course) {
+            return response()->json(['errors' => ['name' => ['Такое значение поля Название уже существует.']]]);
+        }
+        $course->update($request->all());
+        return response()->json(['course' => $course]);
     }
 
     /**
