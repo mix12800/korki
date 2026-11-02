@@ -13,7 +13,7 @@ class CourseController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(['courses' => Course::all()]);
     }
 
     /**
@@ -38,7 +38,7 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
-        //
+        return response()->json(['course' => $course]);
     }
 
     /**
@@ -54,8 +54,9 @@ class CourseController extends Controller
      */
     public function update(UpdateCourseRequest $request, Course $course)
     {
-        $course_old = Course::where('name', $request->name);
-        if ($course_old && $course_old->id != $course) {
+
+        $course_old = Course::where('name', $request->name)->first();
+        if ($course_old && $course_old->id != $course->id) {
             return response()->json(['errors' => ['name' => ['Такое значение поля Название уже существует.']]]);
         }
         $course->update($request->all());
@@ -67,6 +68,7 @@ class CourseController extends Controller
      */
     public function destroy(Course $course)
     {
-        //
+        $course->delete();
+        return response()->json(['message' => 'ok']);
     }
 }

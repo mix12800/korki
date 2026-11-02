@@ -14,9 +14,11 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('course_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->date('date');
-            $table->enum('status', ['new', 'active', 'completed']);
-            $table->text('comment');
+            $table->enum('status', ['new', 'active', 'completed'])->default('new');
+            $table->enum('pay', ['cash', 'translation']);
+            $table->text('comment')->nullable();
             $table->timestamps();
         });
     }

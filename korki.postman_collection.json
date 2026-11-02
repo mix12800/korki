@@ -1,0 +1,547 @@
+{
+  "info": {
+    "_postman_id": "a2cfddc4-3b66-4f9a-972f-a9cf50d4f9c9",
+    "name": "korki",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "49678141"
+  },
+  "item": [
+    {
+      "name": "reg",
+      "item": [
+        {
+          "name": "reg",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "let jsonData = pm.response.json();\r\npm.collectionVariables.set('token_user', jsonData.token);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "accept/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "fio",
+                  "value": "Иванов Иван Иванович",
+                  "type": "text"
+                },
+                {
+                  "key": "phone",
+                  "value": "7(999)999-99-99",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "{{$randomEmail}}",
+                  "type": "text"
+                },
+                {
+                  "key": "login",
+                  "value": "{{$randomEmail}}",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "1@1.com1@1.com",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{api_server}}registration",
+              "host": [
+                "{{api_server}}registration"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "auth",
+      "item": [
+        {
+          "name": "admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "let jsonData = pm.response.json();\r\npm.collectionVariables.set('token_admin', jsonData.token);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "accept/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "login",
+                  "value": "Admin",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "KorokNET",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{api_server}}auth",
+              "host": [
+                "{{api_server}}auth"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Курс",
+      "item": [
+        {
+          "name": "создать",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "let jsonData = pm.response.json();\r\npm.collectionVariables.set('course_id', jsonData.course.id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_admin}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "accept/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "{{$randomEmail}}",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{api_server}}course",
+              "host": [
+                "{{api_server}}course"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "редактировать",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_admin}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "accept/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "{{$randomEmail}}",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{api_server}}course/{{course_id}}",
+              "host": [
+                "{{api_server}}course"
+              ],
+              "path": [
+                "{{course_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "получить",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_user}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "accept/json"
+              }
+            ],
+            "url": {
+              "raw": "{{api_server}}course",
+              "host": [
+                "{{api_server}}course"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "получить  по id",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_admin}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "accept/json"
+              }
+            ],
+            "url": {
+              "raw": "{{api_server}}course/{{course_id}}",
+              "host": [
+                "{{api_server}}course"
+              ],
+              "path": [
+                "{{course_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "удалить",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_admin}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "accept/json"
+              }
+            ],
+            "url": {
+              "raw": "{{api_server}}course/{{course_id}}",
+              "host": [
+                "{{api_server}}course"
+              ],
+              "path": [
+                "{{course_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Запись",
+      "item": [
+        {
+          "name": "Записаться",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "let jsonData = pm.response.json();\r\npm.collectionVariables.set('order_id', jsonData.order.id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_user}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "accept/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "course_id",
+                  "value": "{{course_id}}",
+                  "type": "text"
+                },
+                {
+                  "key": "date",
+                  "value": "01.05.2100",
+                  "type": "text"
+                },
+                {
+                  "key": "pay",
+                  "value": "cash",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{api_server}}order",
+              "host": [
+                "{{api_server}}order"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Отмена",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_user}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "accept/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "status",
+                  "value": "active",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{api_server}}order/{{order_id}}",
+              "host": [
+                "{{api_server}}order"
+              ],
+              "path": [
+                "{{order_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Статус",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_admin}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "accept/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "status",
+                  "value": "active",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{api_server}}order/{{order_id}}",
+              "host": [
+                "{{api_server}}order"
+              ],
+              "path": [
+                "{{order_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Получить",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_admin}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "accept/json"
+              }
+            ],
+            "url": {
+              "raw": "{{api_server}}order",
+              "host": [
+                "{{api_server}}order"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Отзыв",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_admin}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "accept/json"
+              }
+            ],
+            "url": {
+              "raw": "{{api_server}}order/{{order_id}}",
+              "host": [
+                "{{api_server}}order"
+              ],
+              "path": [
+                "{{order_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "api_server",
+      "value": ""
+    },
+    {
+      "key": "token_user",
+      "value": ""
+    },
+    {
+      "key": "token_admin",
+      "value": ""
+    },
+    {
+      "key": "course_id",
+      "value": ""
+    },
+    {
+      "key": "order_id",
+      "value": ""
+    }
+  ]
+}

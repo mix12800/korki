@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CourseController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/user', function (Request $request) {
@@ -13,5 +13,18 @@ Route::post('registration', [AuthController::class, 'registration']);
 Route::post('auth', [AuthController::class, 'auth']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::resource('course', CourseController::class);
+    Route::get('course', [CourseController::class, 'index']);
+
+    Route::middleware(['role:user'])
+        ->group(function () {
+            Route::resource('order', OrderController::class)->except('index', 'update');;
+            Route::get('commentAdd/{order}', [OrderController::class, 'commentAdd']);
+        });
+
+    Route::middleware(['role:admin'])
+        ->group(function () {
+            Route::resource('course', CourseController::class)->except('index');
+            Route::patch('order/{order}', [OrderController::class, 'update']);
+            Route::get('order', [OrderController::class, 'index']);
+        });
 });

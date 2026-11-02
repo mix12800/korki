@@ -22,7 +22,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
-#[Fillable(['fio','phone', 'email', 'login', 'password'])]
+#[Fillable(['fio', 'phone', 'email', 'login', 'password'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -40,5 +40,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function hasRole($roles)
+    {
+        return in_array($this->role, $roles);
     }
 }
