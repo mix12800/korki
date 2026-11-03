@@ -18,7 +18,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware(['role:user'])
         ->group(function () {
             Route::resource('order', OrderController::class)->except('index', 'update');;
-            Route::get('commentAdd/{order}', [OrderController::class, 'commentAdd']);
+            Route::patch('commentAdd/{order}', [OrderController::class, 'commentAdd']);
         });
 
     Route::middleware(['role:admin'])
