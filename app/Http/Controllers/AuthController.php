@@ -6,6 +6,7 @@ use App\Http\Requests\AuthRequest;
 use App\Http\Requests\RegistrationRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -24,4 +25,10 @@ class AuthController extends Controller
         }
         return response()->json(['errors' => ['login' => ['ошибка входа']]]);
     }
+
+    public function getUser()
+    {
+        return response()->json(['user' => Auth::user()]);
+    }
+
 }

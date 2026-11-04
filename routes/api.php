@@ -14,6 +14,7 @@ Route::post('auth', [AuthController::class, 'auth']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('course', [CourseController::class, 'index']);
+    Route::get('user', [AuthController::class, 'getUser']);
 
     Route::middleware(['role:user'])
         ->group(function () {

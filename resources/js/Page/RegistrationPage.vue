@@ -12,6 +12,7 @@
                 id="fio"
                 v-model="fio"
                 placeholder="fio"
+                :disabled="isLoading"
             />
             <label for="fio">ФИО</label>
             <div v-if="errors.fio" class="invalid-feedback">
@@ -28,6 +29,7 @@
                 id="phone"
                 v-model="phone"
                 placeholder="phone"
+                :disabled="isLoading"
             />
 
             <label for="phone">Телефон</label>
@@ -45,6 +47,7 @@
                 id="email"
                 v-model="email"
                 placeholder="email"
+                :disabled="isLoading"
             />
             <label for="email">Адрес электронной почты</label>
 
@@ -61,6 +64,7 @@
                 id="login"
                 v-model="login"
                 placeholder="login"
+                :disabled="isLoading"
             />
             <label for="login">Логин</label>
             <div v-if="errors.login" class="invalid-feedback">
@@ -79,6 +83,7 @@
                 id="password"
                 v-model="password"
                 placeholder="password"
+                :disabled="isLoading"
             />
             <label for="password">Пароль</label>
             <div v-if="errors.password" class="invalid-feedback">
@@ -87,13 +92,17 @@
             <div v-else class="form-text">Минимум 8 символов</div>
         </div>
 
-        <button @click="BtnRegistration" class="btn btn-dark btn-lg w-100 mb-3">
+        <button
+            @click="BtnRegistration"
+            :disabled="isLoading"
+            class="btn btn-dark btn-lg w-100 mb-3"
+        >
             Создать пользователя
         </button>
 
         <div class="link-form mb-1">
             Уже зарегистрированы?
-            <a href="Auth.html" @click.prevent="page('AuthPage')"
+            <a href="Auth.html" @click.prevent="ChangePage('AuthPage')"
                 >Авторизация</a
             >
         </div>
@@ -102,10 +111,11 @@
 <script>
 export default {
     name: "RegistrationPage",
-    props: ["page", "server"],
+    props: ["ChangePage", "server", "AuthUser"],
 
     data() {
         return {
+            isLoading: false,
             fio: "",
             phone: "",
             email: "",
@@ -117,7 +127,8 @@ export default {
 
     methods: {
         BtnRegistration() {
-            const formdata = new FormData();
+            this.isLoading = true;
+            let formdata = new FormData();
             formdata.append("fio", this.fio);
             formdata.append("phone", this.phone);
             formdata.append("email", this.email);
@@ -127,7 +138,10 @@ export default {
                 .then((result) => {
                     if (result.errors) {
                         this.errors = result.errors;
+                    } else {
+                        this.AuthUser(result);
                     }
+                    this.isLoading = false;
                 })
                 .catch((error) => console.error(error));
         },
