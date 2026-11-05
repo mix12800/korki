@@ -9,5 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    //
+    public function Course() 
+    {
+        return $this->belongsTo(Course::class);
+    }
 }

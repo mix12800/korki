@@ -11,12 +11,17 @@ use Illuminate\Support\Facades\Auth;
 class OrderController extends Controller
 {
 
+    public function myorder()
+    {
+        return response()->json(['Orders' => Order::with('Course')->where('user_id', Auth::id())->get()]);
+    }
+
     public function commentAdd(RequestCommentStorage $request, Order $order)
     {
         if (Auth::id() == $order->user_id && $order->status == 'completed') {
             return response()->json(['error' => ['code' => 403, 'message' => 'Доступ запрещён']], 403);
         }
-        
+
         $order->comment = $request->comment;
         return response()->json(['order' => $order]);
     }

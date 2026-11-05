@@ -2,18 +2,41 @@
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
-                <img src="@/img/image01.webp" class="logo" alt="" />
+                <img src="@/img/logo.webp" class="logo" alt="" />
                 Корочки.есть
             </a>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 nav-underline">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Заявки</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">Курсы</a>
-                    </li>
+                    <template v-if="user.role == 'admin'">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Заявки</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">Курсы</a>
+                        </li>
+                    </template>
+                    <template v-else>
+                        <li class="nav-item">
+                            <a
+                                class="nav-link"
+                                :class="{ active: page == 'MyOrdersPage' }"
+                                href="#"
+                                @click.prevent="ChangePage('MyOrdersPage')"
+                                >Мои заявки</a
+                            >
+                        </li>
+
+                        <li class="nav-item">
+                            <a
+                                class="nav-link"
+                                :class="{ active: page == 'OrderAddPage' }"
+                                href="#"
+                                @click.prevent="ChangePage('OrderAddPage')"
+                                >Сформировать заявку</a
+                            >
+                        </li>
+                    </template>
                 </ul>
                 <button
                     class="btn btn-dark"
@@ -71,6 +94,6 @@
 <script>
 export default {
     name: "HeaderComponent",
-    props: ["logout"],
+    props: ["logout", "user", "page", "ChangePage"],
 };
 </script>

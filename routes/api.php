@@ -12,7 +12,10 @@ use Illuminate\Support\Facades\Route;
 Route::post('registration', [AuthController::class, 'registration']);
 Route::post('auth', [AuthController::class, 'auth']);
 
+
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('logout', [AuthController::class, 'logout']);
+
     Route::get('course', [CourseController::class, 'index']);
     Route::get('user', [AuthController::class, 'getUser']);
 
@@ -20,6 +23,7 @@ Route::middleware('auth:sanctum')->group(function () {
         ->group(function () {
             Route::resource('order', OrderController::class)->except('index', 'update');;
             Route::patch('commentAdd/{order}', [OrderController::class, 'commentAdd']);
+            Route::get('myorder', [OrderController::class, 'myorder']);
         });
 
     Route::middleware(['role:admin'])

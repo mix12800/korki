@@ -7,7 +7,7 @@
         <div class="form-floating mb-3">
             <input
                 type="text"
-                class="form-control focus-ring focus-ring-dark border"
+                class="form-control focus-ring focus-ring-dark"
                 :class="{ 'is-invalid': errors.login }"
                 id="login"
                 v-model="login"
@@ -22,7 +22,7 @@
         <div class="form-floating mb-3">
             <input
                 type="password"
-                class="form-control focus-ring focus-ring-dark border"
+                class="form-control focus-ring focus-ring-dark"
                 :class="{ 'is-invalid': errors.password }"
                 id="password"
                 v-model="password"

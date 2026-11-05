@@ -1,5 +1,11 @@
 <template>
-    <HeaderComponent v-if="isAuth" :logout="logout" />
+    <HeaderComponent
+        v-if="isAuth"
+        :user="user"
+        :logout="logout"
+        :page="page"
+        :ChangePage="ChangePage"
+    />
 
     <AuthPage
         v-if="page == 'AuthPage'"
@@ -14,13 +20,22 @@
         :AuthUser="AuthUser"
     />
 
-    <CoursesComponent v-if="page == 'CoursesComponent'" />
-    {{ user }}
+    <CoursesPage v-if="page == 'CoursesPage'" :server="server" />
+
+    <OrderAddPage
+        v-if="page == 'OrderAddPage'"
+        :server="server"
+        :ChangePage="ChangePage"
+    />
+
+    <MyOrdersPage v-if="page == 'MyOrdersPage'" :server="server" />
 </template>
 <script>
-import CoursesComponent from "./components/CoursesComponent.vue";
 import HeaderComponent from "./components/HeaderComponent.vue";
 import AuthPage from "./Page/AuthPage.vue";
+import CoursesPage from "./Page/CoursesPage.vue";
+import MyOrdersPage from "./Page/MyOrdersPage.vue";
+import OrderAddPage from "./Page/OrderAddPage.vue";
 import RegistrationPage from "./Page/RegistrationPage.vue";
 
 export default {
@@ -43,13 +58,19 @@ export default {
                     this.isAuth = true;
                 })
                 .catch((error) => console.error(error));
+        } else {
+            this.ChangePage("AuthPage");
         }
     },
 
     methods: {
         logout() {
             this.isAuth = false;
-            this.page("authPage");
+            this.user = {};
+            this.ChangePage("AuthPage");
+            this.server("logout")
+                .then((result) => {})
+                .catch((error) => console.error(error));
             localStorage.removeItem("token");
         },
 
@@ -57,7 +78,9 @@ export default {
             this.user = result.user;
             localStorage.setItem("token", result.token);
             if (result.user.role == "admin") {
-                this.ChangePage("CoursesComponent");
+                this.ChangePage("CoursesPage");
+            } else {
+                this.ChangePage("OrderAddPage");
             }
             this.isAuth = true;
         },
@@ -87,6 +110,9 @@ export default {
 
             return await fetch(this.server_URL + route, requestOptions).then(
                 (response) => {
+                    if (response.status == "401") {
+                        this.logout();
+                    }
                     return response.json();
                 },
             );
@@ -96,8 +122,10 @@ export default {
     components: {
         AuthPage,
         RegistrationPage,
-        CoursesComponent,
+        CoursesPage,
         HeaderComponent,
+        OrderAddPage,
+        MyOrdersPage,
     },
 };
 </script>
