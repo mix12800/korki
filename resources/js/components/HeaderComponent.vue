@@ -10,10 +10,22 @@
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 nav-underline">
                     <template v-if="user.role == 'admin'">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Заявки</a>
+                            <a
+                                class="nav-link"
+                                :class="{ active: page == 'OrdersPage' }"
+                                @click.prevent="ChangePage('OrdersPage')"
+                                href="#"
+                                >Заявки</a
+                            >
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" href="#">Курсы</a>
+                            <a
+                                class="nav-link"
+                                :class="{ active: page == 'CoursesPage' }"
+                                @click.prevent="ChangePage('CoursesPage')"
+                                href="#"
+                                >Курсы</a
+                            >
                         </li>
                     </template>
                     <template v-else>

@@ -18,11 +18,12 @@ class OrderController extends Controller
 
     public function commentAdd(RequestCommentStorage $request, Order $order)
     {
-        if (Auth::id() == $order->user_id && $order->status == 'completed') {
+        if (Auth::id() != $order->user_id && $order->status != 'completed') {
             return response()->json(['error' => ['code' => 403, 'message' => 'Доступ запрещён']], 403);
         }
 
         $order->comment = $request->comment;
+        $order->save();
         return response()->json(['order' => $order]);
     }
     /**
@@ -30,7 +31,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        return response()->json(['orders' => Order::paginate('11')]);
+        return response()->json(['orders' => Order::with('course', 'user')->paginate('3')]);
     }
 
     /**
@@ -76,6 +77,7 @@ class OrderController extends Controller
     public function update(UpdateOrderRequest $request, Order $order)
     {
         $order->status = $request->status;
+        $order->save();
         return response()->json(['order' => $order]);
     }
 

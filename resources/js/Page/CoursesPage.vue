@@ -28,14 +28,9 @@
             <tbody>
                 <tr v-for="(Course, key) in Courses" :key="key">
                     <th>
-                        <!-- <span class="placeholder col-2"></span> -->
                         {{ key + 1 }}
                     </th>
                     <td>
-                        <!-- <a
-                class="btn btn-dark disabled placeholder col-6"
-                aria-disabled="true"
-              ></a> -->
                         {{ Course.name }}
                     </td>
                     <td></td>
@@ -65,10 +60,6 @@
                                 Удалить <i class="bi bi-trash"></i>
                             </button>
                         </div>
-                        <!-- <a
-                class="btn btn-dark disabled placeholder col-6"
-                aria-disabled="true"
-              ></a> -->
                     </td>
                 </tr>
             </tbody>

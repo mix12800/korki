@@ -22,6 +22,8 @@
 
     <CoursesPage v-if="page == 'CoursesPage'" :server="server" />
 
+    <OrdersPage v-if="page == 'OrdersPage'" :server="server" />
+
     <OrderAddPage
         v-if="page == 'OrderAddPage'"
         :server="server"
@@ -36,6 +38,7 @@ import AuthPage from "./Page/AuthPage.vue";
 import CoursesPage from "./Page/CoursesPage.vue";
 import MyOrdersPage from "./Page/MyOrdersPage.vue";
 import OrderAddPage from "./Page/OrderAddPage.vue";
+import OrdersPage from "./Page/OrdersPage.vue";
 import RegistrationPage from "./Page/RegistrationPage.vue";
 
 export default {
@@ -78,9 +81,9 @@ export default {
             this.user = result.user;
             localStorage.setItem("token", result.token);
             if (result.user.role == "admin") {
-                this.ChangePage("CoursesPage");
+                this.ChangePage("OrdersPage");
             } else {
-                this.ChangePage("OrderAddPage");
+                this.ChangePage("MyOrdersPage");
             }
             this.isAuth = true;
         },
@@ -126,6 +129,7 @@ export default {
         HeaderComponent,
         OrderAddPage,
         MyOrdersPage,
+        OrdersPage,
     },
 };
 </script>
