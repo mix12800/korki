@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Request;
 use App\Http\Requests\RequestCommentStorage;
 use App\Models\Order;
 use App\Http\Requests\StoreOrderRequest;
@@ -13,7 +14,7 @@ class OrderController extends Controller
 
     public function myorder()
     {
-        return response()->json(['Orders' => Order::with('Course')->where('user_id', Auth::id())->get()]);
+        return response()->json(['Orders' => Order::orderBy('created_at', 'desc')->with('Course')->where('user_id', Auth::id())->paginate('10')]);
     }
 
     public function commentAdd(RequestCommentStorage $request, Order $order)
@@ -29,9 +30,13 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(['orders' => Order::with('course', 'user')->paginate('3')]);
+        return response()->json(['orders' => Order::orderBy('created_at', 'desc')->where(function ($value) use ($request) {
+            if ($request->status_filter) {
+                $value->where('status', $request->status_filter);
+            }
+        })->with('course', 'user')->paginate('8')]);
     }
 
     /**

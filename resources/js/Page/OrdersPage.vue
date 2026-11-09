@@ -1,10 +1,15 @@
 <template>
     <div class="p-5">
-        <select class="form-select mb-3" aria-label=".form-select-lg пример">
-            <option value="0" selected>Фильтр</option>
-            <option value="1">Новые заявки</option>
-            <option value="2">Идет обучение</option>
-            <option value="2">Обучение завершено</option>
+        <select
+            class="form-select mb-3"
+            v-model="status_filter"
+            @change="OrdersGet"
+            aria-label=".form-select-lg пример"
+        >
+            <option value="" selected>Фильтр</option>
+            <option v-for="value in statusOption" :value="value.value">
+                {{ value.text }}
+            </option>
         </select>
         <table class="table table-hover">
             <thead>
@@ -87,7 +92,21 @@ export default {
         return {
             dataPage: [],
             order: {},
-
+            statusOption: [
+                {
+                    text: "Новые заявки",
+                    value: "new",
+                },
+                {
+                    text: "Идет обучение",
+                    value: "active",
+                },
+                {
+                    text: "Обучение завершено",
+                    value: "completed",
+                },
+            ],
+            status_filter: "",
             sortOptons: {},
         };
     },
@@ -98,8 +117,11 @@ export default {
 
     methods: {
         OrdersGet(page = 1) {
-            this.server(`order?page=${page}`)
+            let formdata = new FormData();
+            formdata.append("status_filter", this.status_filter);
+            this.server(`orders?page=${page}`, "POST", formdata)
                 .then((result) => {
+                    console.log(result.orders.data);
                     this.dataPage = result.orders;
                 })
                 .catch((error) => console.error(error));

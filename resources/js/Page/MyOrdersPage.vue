@@ -13,7 +13,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(order, key) in Orders" :key="key">
+                <tr v-for="(order, key) in datePage.data" :key="key">
                     <th>{{ key + 1 }}</th>
                     <td>{{ order.course.name }}</td>
                     <td>
@@ -32,12 +32,18 @@
                     <td>
                         <button
                             class="btn btn-dark"
+                            v-if="order.comment"
+                            disabled
+                        >
+                            Отправлен
+                        </button>
+                        <button
+                            v-else
+                            class="btn btn-dark"
                             data-bs-toggle="modal"
                             data-bs-target="#exampleModalComent"
                             @click="OrderGet(key)"
-                            :disabled="
-                                order.status != 'completed' || order.comment
-                            "
+                            :disabled="order.status != 'completed'"
                         >
                             Написать отзыв
                         </button>
@@ -56,6 +62,25 @@
                 </tr>
             </tbody>
         </table>
+    </div>
+
+    <div class="btn-group btn-group-lg w-50 p-5 pt-0">
+        <button
+            type="button"
+            class="btn btn-dark"
+            @click="OrdersGet(datePage.current_page - 1)"
+            :disabled="datePage.current_page == 1"
+        >
+            <i class="bi bi-chevron-double-left"></i>
+        </button>
+        <button
+            type="button"
+            class="btn btn-dark"
+            @click="OrdersGet(datePage.current_page + 1)"
+            :disabled="datePage.last_page == datePage.current_page"
+        >
+            <i class="bi bi-chevron-double-right"></i>
+        </button>
     </div>
 
     <!-- Модальное окно Отмена -->
@@ -177,7 +202,7 @@ export default {
     data() {
         return {
             comment: "",
-            Orders: [],
+            datePage: [],
 
             payMethod: {
                 cash: "наличными",
@@ -208,16 +233,16 @@ export default {
     },
 
     methods: {
-        OrdersGet() {
-            this.server(`myorder`)
+        OrdersGet(page = 1) {
+            this.server(`myorder?page=${page}`)
                 .then((result) => {
-                    this.Orders = result.Orders;
+                    this.datePage = result.Orders;
                 })
                 .catch((error) => console.error(error));
         },
 
         OrderGet(key) {
-            this.order = this.Orders[key];
+            this.order = this.datePage.data[key];
         },
 
         OrderDel() {

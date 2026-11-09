@@ -16,7 +16,7 @@
             {{ payMethod[order.pay] }}
         </td>
         <td>
-            <select class="form-select mb-3" v-model="status">
+            <select class="form-select mb-3" v-model="order.status">
                 <option value="new">Новая</option>
                 <option value="active">Идет обучение</option>
                 <option value="completed">Обучение завершено</option>
@@ -51,7 +51,6 @@ export default {
 
     data() {
         return {
-            status: this.order.status,
             isLoading: false,
             payMethod: {
                 cash: "наличными",
@@ -64,9 +63,9 @@ export default {
         UpdateOrder() {
             this.isLoading = true;
             let formdata = new FormData();
-            formdata.append("status", this.status);
+            formdata.append("status", this.order.status);
             this.server(`order/${this.order.id}`, "PATCH", formdata)
-                .then((result) => {
+                .then(() => {
                     this.OrdersGet();
                     this.isLoading = false;
                 })

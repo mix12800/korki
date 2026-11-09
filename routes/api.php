@@ -30,6 +30,6 @@ Route::middleware('auth:sanctum')->group(function () {
         ->group(function () {
             Route::resource('course', CourseController::class)->except('index');
             Route::patch('order/{order}', [OrderController::class, 'update']);
-            Route::get('order', [OrderController::class, 'index']);
+            Route::post('orders', [OrderController::class, 'index']);
         });
 });

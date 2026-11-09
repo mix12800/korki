@@ -13,7 +13,7 @@ class CourseController extends Controller
      */
     public function index()
     {
-        return response()->json(['courses' => Course::all()]);
+        return response()->json(['courses' => Course::orderBy('created_at', 'desc')->get()]);
     }
 
     /**
